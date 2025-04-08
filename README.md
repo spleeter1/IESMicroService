@@ -16,3 +16,5 @@
 -   spring-boot-starter-data-jpa,
 -   mysql-connector-java,
 -   spring-cloud-starter-openfeign
+
+-lombok nữa
