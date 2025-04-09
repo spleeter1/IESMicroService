@@ -6,6 +6,7 @@
 
 **API Gateway**
 
+-   spring-boot-starter-webflux
 -   spring-cloud-starter-gateway,
 -   spring-cloud-starter-netflix-eureka-client
 
