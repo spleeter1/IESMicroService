@@ -1,6 +1,18 @@
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+
+        - id: import-order-service
+          uri: lb://import-order-service
+          predicates:
+            - Path=/order/**
 
 server:
   port: 8080
@@ -15,18 +27,8 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-cloud:
-  gateway:
-    routes:
-      - id: user-service
-        uri: lb://user-service
-        predicates:
-          - Path=/user/**
 
-      - id: import-order-service
-        uri: lb://import-order-service
-        predicates:
-          - Path=/order/**
+
 
 logging:
   level:
