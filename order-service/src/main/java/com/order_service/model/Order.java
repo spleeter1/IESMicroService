@@ -1,6 +1,7 @@
 package com.order_service.model;
 
 import com.order_service.Enums.OrderStatus;
+import com.order_service.Enums.SourceType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +31,11 @@ public class Order {
     @Column(nullable = false)
     private LocalDate orderDate;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+
+    @Enumerated(EnumType.STRING)
+    private SourceType sourceType;
 
     @Column(nullable = false)
     private long totalAmount;

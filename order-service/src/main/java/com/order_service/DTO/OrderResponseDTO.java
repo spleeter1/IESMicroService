@@ -1,6 +1,7 @@
 package com.order_service.DTO;
 
 import com.order_service.Enums.OrderStatus;
+import com.order_service.Enums.SourceType;
 import com.order_service.model.Order;
 import com.order_service.model.OrderDetail;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class OrderResponseDTO {
     private OrderStatus orderStatus;
     private long totalAmount;
     private List<OrderDetailResponseDTO> details;
+    private SourceType sourceType;
 
     public OrderResponseDTO(Order order){
         this.id = order.getId();
@@ -31,5 +33,8 @@ public class OrderResponseDTO {
         for (OrderDetail detail : order.getOrderDetailList()){
             details.add(new OrderDetailResponseDTO(detail));
         }
+
+        this.sourceType = order.getSourceType();
+
     }
 }
