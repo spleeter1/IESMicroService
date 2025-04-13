@@ -19,3 +19,10 @@
 -   spring-cloud-starter-openfeign
 
 -lombok nữa
+
+api-gatewayy: 8080
+import-order: 8081
+order: 8082
+statistic: 8083
+product: 8084
+user : 8085

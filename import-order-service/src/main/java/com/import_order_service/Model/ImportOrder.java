@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -21,13 +22,13 @@ public class ImportOrder {
     private long id;
 
     @Column(nullable = false)
-    private Date orderDate;
+    private LocalDate orderDate;
 
     @Column(nullable = false)
     private int totalQuantity;
 
     @Column(nullable = false)
-    private int totalAmount;
+    private long totalAmount;
 
     @Column(nullable = false)
     private long supplierId;
