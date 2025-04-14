@@ -7,12 +7,15 @@ import lombok.Setter;
 @Setter
 @Getter
 public class OrderDetailResponseDTO {
-    private long id;
+    private long productId;
     private String productName;
     private int quantity;
     private long productSalePrice;
 
     public OrderDetailResponseDTO (OrderDetail orderDetail){
-
+        this.productId = orderDetail.getProductId();
+        this.productName = orderDetail.getProductName();
+        this.quantity = orderDetail.getQuantity();
+        this.productSalePrice = orderDetail.getProductSalePrice();
     }
 }

@@ -34,4 +34,7 @@ public class Product {
 
     @Column(nullable = false)
     private String supplierName;
+
+    @Version
+    private long version;
 }

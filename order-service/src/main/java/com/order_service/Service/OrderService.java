@@ -12,6 +12,7 @@ import com.order_service.model.OrderDetail;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderFlowService orderFlowService;
 
+    @Transactional
     public OrderResponseDTO createOrder (OrderRequestDTO requests){
         Order order = new Order();
         order.setAgentId(requests.getAgentId());
@@ -53,10 +55,16 @@ public class OrderService {
         {
             order.setOrderStatus(OrderStatus.SHIPPING);
         }
+        //gọi api -> product service. Kiểm tra đủ slg mới cho đặt
+
         order.setOrderDate(LocalDate.now());
         order.setTotalAmount(totalAmount);
         order.setOrderDetailList(detailList);
+
+
+        // đặt thành công thì kafka request -> statistic service
         return new OrderResponseDTO(orderRepository.save(order));
+
     }
 
     public OrderResponseDTO updateOrderStatus (Long id, OrderStatus nextStatus, UserRole role){
