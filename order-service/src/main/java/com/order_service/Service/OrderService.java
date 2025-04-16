@@ -1,8 +1,7 @@
 package com.order_service.Service;
 
-import com.order_service.DTO.OrderDetailRequestDTO;
-import com.order_service.DTO.OrderRequestDTO;
-import com.order_service.DTO.OrderResponseDTO;
+import com.order_service.Client.ProductClient;
+import com.order_service.DTO.*;
 import com.order_service.Enums.OrderStatus;
 import com.order_service.Enums.SourceType;
 import com.order_service.Enums.UserRole;
@@ -23,6 +22,7 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderFlowService orderFlowService;
+    private final ProductClient productClient;
 
     @Transactional
     public OrderResponseDTO createOrder (OrderRequestDTO requests){
@@ -32,6 +32,7 @@ public class OrderService {
 
         long totalAmount = 0;
         List<OrderDetail> detailList = new ArrayList<>();
+        ProductReserveBatchRequest productReserveBatchRequest = new ProductReserveBatchRequest();
         for(OrderDetailRequestDTO orderDetailRequestDTO : requests.getDetail()){
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setProductId(orderDetailRequestDTO.getProductId());
@@ -45,7 +46,11 @@ public class OrderService {
             orderDetail.setOrder(order);
 
             detailList.add(orderDetail);
+
+            ProductReserveRequest productReserveRequest = new ProductReserveRequest(orderDetail.getProductId(),orderDetail.getQuantity());
+            productReserveBatchRequest.getItems().add(productReserveRequest);
         }
+
         SourceType sourceType = requests.getSourceType();
         if (sourceType == SourceType.ONLINE)
         {
@@ -56,13 +61,19 @@ public class OrderService {
             order.setOrderStatus(OrderStatus.SHIPPING);
         }
         //gọi api -> product service. Kiểm tra đủ slg mới cho đặt
+        try {
+            productClient.reserveProductBatch(productReserveBatchRequest);
+        }catch (Exception e){
+            throw  new RuntimeException(e.getMessage());
+        }
 
         order.setOrderDate(LocalDate.now());
         order.setTotalAmount(totalAmount);
         order.setOrderDetailList(detailList);
 
-
         // đặt thành công thì kafka request -> statistic service
+
+
         return new OrderResponseDTO(orderRepository.save(order));
 
     }

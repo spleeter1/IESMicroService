@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +26,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void handleImportOrder(ProductReserveBatchRequest request)
-    {
-        for(ProductReserveRequest item: request.getItems()){
+    public void handleImportOrder(ProductReserveBatchRequest request) {
+        for (ProductReserveRequest item : request.getItems()) {
             Product product = productRepository.findById(item.getProductId()).orElseThrow();
             product.setQuantity(product.getQuantity() + item.getQuantity());
         }

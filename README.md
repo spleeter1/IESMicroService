@@ -26,3 +26,8 @@ order: 8082
 statistic: 8083
 product: 8084
 user : 8085
+
+docker exec -it kafka-docker-kafka-1 \
+kafka-topics --create \
+--topic my-topic \
+--bootstrap-server localhost:9092

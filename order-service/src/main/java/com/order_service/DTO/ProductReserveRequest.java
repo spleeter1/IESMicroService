@@ -1,16 +1,16 @@
-package com.product.DTO;
+package com.order_service.DTO;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductReserveBatchRequest {
-    List<ProductReserveRequest> items;
+public class ProductReserveRequest {
+    private Long productId;
+    private int quantity;
 }

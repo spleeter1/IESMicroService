@@ -1,4 +1,4 @@
-package com.product.DTO;
+package com.import_order_service.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductReserveBatchRequest {
     List<ProductReserveRequest> items;
 }

@@ -16,7 +16,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/product/compareQuantity")
+    @PostMapping("/product/checkQuantity")
     public ResponseEntity<?> reserveProductBatch(@RequestBody ProductReserveBatchRequest request){
         try {
             productService.reserveProductBatch(request);
