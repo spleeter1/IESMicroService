@@ -11,5 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ImportOrderCreatedEvent {
     private long supplierId;
+    private String supplierName;
     private int totalQuantity;
 }

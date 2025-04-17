@@ -9,8 +9,9 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImportOrderCreatedEvent {
-        private long supplierId;
-        private String supplierName;
-        private int totalQuantity;
+public class OrderDetailCreatedEvent {
+    private long productId;
+    private String productName;
+    private long amount;
+
 }

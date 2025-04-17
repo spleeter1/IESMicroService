@@ -64,11 +64,9 @@ public class ImportOrderService {
             System.err.println("Gọi API thất bại: " + e.getMessage());
         }
 
-
         // gửi số lượng đến supplierimport
-        ImportOrderCreatedEvent e = new ImportOrderCreatedEvent(importOrder.getSupplierId(),importOrder.getTotalQuantity());
+        ImportOrderCreatedEvent e = new ImportOrderCreatedEvent(importOrder.getSupplierId(),importOrder.getSupplierName(),importOrder.getTotalQuantity());
         importOrderEventProducer.send(e);
-
 
         return importOrderResponse;
     }
