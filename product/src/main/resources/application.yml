@@ -1,6 +1,6 @@
 spring:
   application:
-    name: product
+    name: product-service
 
   datasource:
     url: jdbc:mysql://localhost:3336/product_db

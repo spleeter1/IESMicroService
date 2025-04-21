@@ -12,7 +12,29 @@ spring:
         - id: import-order-service
           uri: lb://import-order-service
           predicates:
+            - Path=/import-orders/**
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
             - Path=/orders/**
+
+        - id: statistic-service
+          uri: lb://statistic-service
+          predicates:
+              - Path=/statistic/**
+
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/product/**
+
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+              - Path=/auth-service/**
+
+
 
 server:
   port: 8080
