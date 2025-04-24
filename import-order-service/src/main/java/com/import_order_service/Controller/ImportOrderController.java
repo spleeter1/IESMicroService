@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/import")
 @RequiredArgsConstructor
 public class ImportOrderController {
     private final ImportOrderService importOrderService;
@@ -17,7 +17,7 @@ public class ImportOrderController {
     public ResponseEntity<?> home(){
         return ResponseEntity.ok("ImportOrderService is working!");
     }
-    @PostMapping("/import")
+    @PostMapping("/create")
     public ResponseEntity<?> createImportOrder(@RequestBody ImportOrderRequest requests){
         try{
             ImportOrderResponse importOrderResponse = importOrderService.createOrder(requests);

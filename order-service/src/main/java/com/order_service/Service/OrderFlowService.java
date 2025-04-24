@@ -13,7 +13,7 @@ public class OrderFlowService {
                 return switch (role) {
                     case WAREHOUSE -> (current == PENDING && next == CANCELED) ||
                             (current == PENDING && next == SHIPPING);
-                    case AGENT -> (current == SHIPPING && next == DELIVERED);
+                    case AGENT -> (current == SHIPPING && next == DELIVERED) || (current == PENDING && next == CANCELED);
                     case ADMIN -> true;
                     default -> false;
                 };

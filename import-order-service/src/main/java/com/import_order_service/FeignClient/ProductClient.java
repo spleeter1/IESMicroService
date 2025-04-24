@@ -6,9 +6,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "product-service", url = "http://product-service")
+@FeignClient(name = "product-service")
 public interface ProductClient {
 
-    @PutMapping("/product/handleImport")
+    @PutMapping("/api/product/handle-import")
     void increaseStock(@RequestBody ProductReserveBatchRequest productReserveBatchRequest);
 }

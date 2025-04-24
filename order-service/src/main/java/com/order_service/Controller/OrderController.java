@@ -10,12 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
-    @PostMapping("/order")
+    @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody  OrderRequestDTO requests){
         try{
             OrderResponseDTO orderResponseDTO= orderService.createOrder(requests);

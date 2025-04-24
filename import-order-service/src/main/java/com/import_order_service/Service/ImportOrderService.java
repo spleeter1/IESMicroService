@@ -61,7 +61,8 @@ public class ImportOrderService {
             productClient.increaseStock(productReserveBatchRequest);
             System.out.println("Tăng số lượng sản phẩm thành công!");
         } catch (Exception e) {
-            System.err.println("Gọi API thất bại: " + e.getMessage());
+//            System.err.println("Gọi API thất bại: " + e.getMessage());
+            throw new RuntimeException("Gọi API thất bại: " + e.getMessage());
         }
 
         // gửi số lượng đến supplierimport

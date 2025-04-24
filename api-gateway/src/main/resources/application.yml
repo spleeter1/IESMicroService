@@ -7,34 +7,44 @@ spring:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/user/**
+            - Path=/users/**
+          filters:
+            - StripPrefix=1
 
         - id: import-order-service
           uri: lb://import-order-service
           predicates:
             - Path=/import-orders/**
+          filters:
+            - StripPrefix=1
 
         - id: order-service
           uri: lb://order-service
           predicates:
             - Path=/orders/**
+          filters:
+            - StripPrefix=1
 
         - id: statistic-service
           uri: lb://statistic-service
           predicates:
-              - Path=/statistic/**
+            - Path=/statistics/**
+          filters:
+            - StripPrefix=1
 
         - id: product-service
           uri: lb://product-service
           predicates:
-            - Path=/product/**
+            - Path=/products/**
+          filters:
+            - StripPrefix=1
 
         - id: auth-service
           uri: lb://auth-service
           predicates:
-              - Path=/auth-service/**
-
-
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
 
 server:
   port: 8080
@@ -48,9 +58,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
-
-
-
 
 logging:
   level:

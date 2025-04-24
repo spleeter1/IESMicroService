@@ -106,4 +106,6 @@ public class StatisticService {
         updateProductRevenueStats(e);
         updateTimeRevenueStats(e);
     }
+
+
 }

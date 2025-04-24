@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +33,22 @@ public class ProductService {
             Product product = productRepository.findById(item.getProductId()).orElseThrow();
             product.setQuantity(product.getQuantity() + item.getQuantity());
         }
+    }
+
+    public List<Product> getAllProductBySupplierId(long supplierId) {
+        return productRepository.findAllProductBySupplierId(supplierId);
+    }
+
+    @Transactional
+    public Product addNewProduct(Product request){
+        Product newProduct = new Product();
+        newProduct.setName(request.getName());
+        newProduct.setQuantity(request.getQuantity());
+        newProduct.setImportPrice(request.getImportPrice());
+        newProduct.setSalePrice(request.getSalePrice());
+        newProduct.setSupplierId(request.getSupplierId());
+        newProduct.setSupplierName(request.getSupplierName());
+
+        productRepository.save(new Product());
     }
 }
