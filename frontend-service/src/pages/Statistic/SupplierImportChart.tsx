@@ -18,14 +18,15 @@ interface Props {
 
 const SupplierImportChart = ({ data }: Props) => {
     return (
-        <ResponsiveContainer width="100%" height="50%">
+        <ResponsiveContainer width="100%" height={400}>
             <BarChart
                 data={data}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                layout="vertical"
+                margin={{ top: 20, right: 30, left: 80, bottom: 5 }}
             >
                 <CartesianGrid strokeDasharray="5" />
-                <XAxis dataKey="supplierName" />
-                <YAxis />
+                <XAxis type="number" />
+                <YAxis dataKey="supplierName" type="category" />
                 <Tooltip />
                 <Legend />
                 <Bar

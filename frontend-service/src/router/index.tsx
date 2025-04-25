@@ -19,13 +19,13 @@ const AppRouter = () => {
                     path="/warehouse-management/product"
                     element={<ProductManagement />}
                 />
-                <Route path="/statistics/product-revenue" />
-                <Route path="/statistics/agent-revenue" />
+                <Route path="/stats/product-revenue" />
+                <Route path="/stats/agent-revenue" />
                 <Route
-                    path="/statistics/supplier-imported"
+                    path="/stats/supplier-imported"
                     element={<SupplierImportChartPage />}
                 />
-                <Route path="/statistics/time-revenue" />
+                <Route path="/stats/time-revenue" />
                 <Route path="*" />
             </Route>
         </Routes>

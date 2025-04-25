@@ -83,7 +83,7 @@ const Sidebar = () => {
                         <ListItemButton
                             sx={{ pl: 4 }}
                             component={Link}
-                            to="/statistics/supplier-imported"
+                            to="/stats/supplier-imported"
                         >
                             <ListItemText primary="Supplier Import Volume" />
                         </ListItemButton>
