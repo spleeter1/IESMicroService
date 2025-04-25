@@ -47,7 +47,7 @@ public class ImportOrderService {
 
             detailList.add(detail);
 
-            ProductReserveRequest productReserveRequest = new ProductReserveRequest(detail.getId(),detail.getQuantity());
+            ProductReserveRequest productReserveRequest = new ProductReserveRequest(detail.getProductId(),detail.getQuantity());
             productReserveBatchRequest.getItems().add(productReserveRequest);
         }
 
@@ -66,8 +66,13 @@ public class ImportOrderService {
         }
 
         // gửi số lượng đến supplierimport
-        ImportOrderCreatedEvent e = new ImportOrderCreatedEvent(importOrder.getSupplierId(),importOrder.getSupplierName(),importOrder.getTotalQuantity());
-        importOrderEventProducer.send(e);
+        try {
+            ImportOrderCreatedEvent e = new ImportOrderCreatedEvent(importOrder.getSupplierId(), importOrder.getSupplierName(), importOrder.getTotalQuantity());
+            importOrderEventProducer.send(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
 
         return importOrderResponse;
     }

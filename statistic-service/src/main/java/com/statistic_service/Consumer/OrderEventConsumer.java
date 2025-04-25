@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class OrderEventConsumer {
     private final StatisticService statisticService;
     @KafkaListener(topics = "order.completed",groupId = "order-service-group")

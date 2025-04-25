@@ -2,6 +2,7 @@ package com.product.Service;
 
 import com.product.DTO.ProductReserveBatchRequest;
 import com.product.DTO.ProductReserveRequest;
+import com.product.DTO.UpdateProductRequestDTO;
 import com.product.Model.Product;
 import com.product.Repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,24 @@ public class ProductService {
         newProduct.setSupplierId(request.getSupplierId());
         newProduct.setSupplierName(request.getSupplierName());
 
-        productRepository.save(new Product());
+        return productRepository.save(newProduct);
+    }
+
+    @Transactional
+    public Product deleteProduct(long productId){
+        Product p = productRepository.findById(productId).orElseThrow();
+        productRepository.deleteById(p.getId());
+        return  p;
+    }
+
+    @Transactional
+    public Product updateProduct(long id, UpdateProductRequestDTO requestDTO){
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product.setName(requestDTO.getName());
+        product.setSalePrice(requestDTO.getSalePrice());
+
+        return productRepository.save(product);
     }
 }

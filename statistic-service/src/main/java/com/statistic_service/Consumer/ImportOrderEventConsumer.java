@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ImportOrderEventConsumer {
-    private StatisticService statisticService;
+    private final StatisticService statisticService;
     @KafkaListener(topics = "import-order.created",groupId = "import-order-service-group")
     public void handleImportOrderCreated(ImportOrderCreatedEvent event){
         statisticService.updateSupplierImportStats(event);

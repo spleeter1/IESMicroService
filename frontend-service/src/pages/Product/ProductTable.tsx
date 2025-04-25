@@ -23,13 +23,13 @@ interface ProductTableProps {
     products: Product[];
     onEdit: (product: Product) => void;
     onDelete: (productId: number) => void;
-    onAdd: () => void;
+    // onAdd: () => void;
 }
 const ProductTable = ({
     products,
-}: // onEdit,
-// onDelete,
-// onAdd,
+    onEdit,
+    onDelete,
+}: // onAdd,
 ProductTableProps) => {
     const renderTextCell = (content: ReactNode) => (
         <TableCell
@@ -101,19 +101,25 @@ ProductTableProps) => {
                                     {renderTextCell(product.importPrice)}
                                     {renderTextCell(product.salePrice)}
                                     <TableCell sx={{ display: 'flex', gap: 1 }}>
-                                        <button>Edit</button>
-                                        <button>Delete</button>
+                                        <button onClick={() => onEdit(product)}>
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => onDelete(product.id)}
+                                        >
+                                            Delete
+                                        </button>
                                     </TableCell>
                                 </TableRow>
                             ))
                         )}
                         <TableRow>
-                            <TableCell colSpan={3} align="right">
+                            {/* <TableCell colSpan={3} align="right">
                                 <button onClick={() => {}}>Add Product</button>
                             </TableCell>
                             <TableCell colSpan={3} align="left">
                                 <button onClick={() => {}}>Save</button>
-                            </TableCell>
+                            </TableCell> */}
                         </TableRow>
                     </TableBody>
                 </Table>

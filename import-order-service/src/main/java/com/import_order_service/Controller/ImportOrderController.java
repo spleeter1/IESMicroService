@@ -23,6 +23,7 @@ public class ImportOrderController {
             ImportOrderResponse importOrderResponse = importOrderService.createOrder(requests);
             return ResponseEntity.ok(importOrderResponse);
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
         }
     }

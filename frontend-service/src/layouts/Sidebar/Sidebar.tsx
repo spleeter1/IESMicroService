@@ -48,7 +48,11 @@ const Sidebar = () => {
                 </ListItemButton>
                 <Collapse in={openProduct} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                        <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemButton
+                            sx={{ pl: 4 }}
+                            component={Link}
+                            to="/warehouse-management/import"
+                        >
                             <ListItemText primary="Import" />
                         </ListItemButton>
                         <ListItemButton
@@ -76,7 +80,11 @@ const Sidebar = () => {
                         <ListItemButton sx={{ pl: 4 }}>
                             <ListItemText primary="Agent Revenue" />
                         </ListItemButton>
-                        <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemButton
+                            sx={{ pl: 4 }}
+                            component={Link}
+                            to="/statistics/supplier-imported"
+                        >
                             <ListItemText primary="Supplier Import Volume" />
                         </ListItemButton>
                         <ListItemButton sx={{ pl: 4 }}>
