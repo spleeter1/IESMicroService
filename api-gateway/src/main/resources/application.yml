@@ -4,12 +4,21 @@ spring:
   cloud:
     gateway:
       routes:
+#        - id: auth-service
+#          uri: lb://auth-service
+#          predicates:
+#            - Path=/auth-service/**
+#          filters:
+#            - StripPrefix=1
+
         - id: user-service
           uri: lb://user-service
           predicates:
+            - Path=/users/auth/**
             - Path=/users/**
           filters:
             - StripPrefix=1
+            - PreserveHostHeader
 
         - id: import-order-service
           uri: lb://import-order-service
@@ -17,6 +26,7 @@ spring:
             - Path=/import-orders/**
           filters:
             - StripPrefix=1
+            - PreserveHostHeader
 
         - id: order-service
           uri: lb://order-service
@@ -24,6 +34,7 @@ spring:
             - Path=/orders/**
           filters:
             - StripPrefix=1
+            - PreserveHostHeader
 
         - id: statistic-service
           uri: lb://statistic-service
@@ -31,6 +42,7 @@ spring:
             - Path=/statistics/**
           filters:
             - StripPrefix=1
+            - PreserveHostHeader
 
         - id: product-service
           uri: lb://product-service
@@ -38,13 +50,11 @@ spring:
             - Path=/products/**
           filters:
             - StripPrefix=1
+            - PreserveHostHeader
 
-        - id: auth-service
-          uri: lb://auth-service
-          predicates:
-            - Path=/auth/**
-          filters:
-            - StripPrefix=1
+jwt:
+  secret: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@"
+  expiration: 86400
 
 server:
   port: 8080
@@ -63,6 +73,8 @@ logging:
   level:
     org.springframework.cloud.gateway: DEBUG
     reactor.netty: DEBUG
+    com:
+      api_gateway=DEBUG:
 
 management:
   endpoints:

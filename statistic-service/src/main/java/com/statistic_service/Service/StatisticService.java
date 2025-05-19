@@ -27,7 +27,7 @@ public class StatisticService {
 
     @Transactional
     public void updateSupplierImportStats(ImportOrderCreatedEvent request) {
-        SupplierImportStats sis = supplierImportStatsRepository.findById(request.getSupplierId()).orElseGet(() -> {
+        SupplierImportStats sis = supplierImportStatsRepository.findBySupplierId(request.getSupplierId()).orElseGet(() -> {
             SupplierImportStats newStat = new SupplierImportStats();
             newStat.setSupplierId(request.getSupplierId());
             newStat.setSupplierName(request.getSupplierName());

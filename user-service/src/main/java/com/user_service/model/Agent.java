@@ -19,16 +19,17 @@ public class Agent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true,nullable = true,length = 50)
-    private String username;
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length =100)
+    @Column(nullable = false, length = 100)
     private String address;
 
-    @Column(nullable = false,length = 11)
+    @Column(nullable = false, length = 11)
     private String phoneNumber;
 
     private LocalDateTime createdAt;

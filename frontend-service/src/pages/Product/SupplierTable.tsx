@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import api from '../../api/apiClient';
 
 interface Supplier {
     id: number;
@@ -28,7 +29,7 @@ const SupplierTable = ({
     useEffect(() => {
         const fetchSuppliers = async () => {
             try {
-                const res = await axios.get('/users/api/supplier/');
+                const res = await api.get('/users/api/supplier/');
                 console.log(res.data);
                 setSuppliers(res.data);
             } catch (err) {

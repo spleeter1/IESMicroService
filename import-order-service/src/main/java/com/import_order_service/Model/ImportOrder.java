@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,6 @@ public class ImportOrder {
     private String supplierName;
 
     @OneToMany(mappedBy = "importOrder",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<ImportOrderDetail> orderDetailList;
+    private List<ImportOrderDetail> orderDetailList = new ArrayList<>();;
 
 }

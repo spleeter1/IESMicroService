@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import ProductTable from './ProductTable';
 import axios from 'axios';
 import ProductModal from './ProductModal';
+import api from '../../api/apiClient';
 
 type Supplier = { id: number; name: string };
 type ProductForm = {
@@ -47,9 +48,7 @@ const ProductPage = () => {
 
     const handleDelete = async (productId: number) => {
         try {
-            const res = await axios.delete(
-                `/products/api/product/${productId}`
-            );
+            const res = await api.delete(`/products/api/product/${productId}`);
             console.log('Product deleted successfully', res.data);
             console.log(productId);
             setProducts(prev =>
@@ -79,7 +78,7 @@ const ProductPage = () => {
                 supplierId: selectedSupplier.id,
             };
 
-            const res = await axios.put(
+            const res = await api.put(
                 `/products/api/product/${editingProduct.id}`,
                 formData,
                 {

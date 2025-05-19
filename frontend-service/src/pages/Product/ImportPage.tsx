@@ -8,6 +8,7 @@ import SelectedProductsTable, {
 import NewProductModal from './NewProductModal';
 import ImportModal from './ImportModal';
 import axios from 'axios';
+import api from '../../api/apiClient';
 
 const ImportPage = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -29,7 +30,7 @@ const ImportPage = () => {
 
         const fetchProducts = async () => {
             try {
-                const res = await axios.get(
+                const res = await api.get(
                     `/products/api/product/${selectedSupplier.id}`
                 );
                 setProducts(res.data);
@@ -82,7 +83,7 @@ const ImportPage = () => {
         try {
             const formData = { ...product, quantity: 0 };
             console.log(formData);
-            const res = await axios.post(
+            const res = await api.post(
                 '/products/api/product/add-product',
                 formData
             );
@@ -99,7 +100,7 @@ const ImportPage = () => {
         const payload = {
             supplierId: selectedSupplier.id,
             supplierName: selectedSupplier.name,
-            orderDetails: selectedProducts.map(p => ({
+            orderDetailList: selectedProducts.map(p => ({
                 productId: p.productId,
                 productName: p.productName,
                 unitPrice: p.importPrice,
@@ -108,7 +109,7 @@ const ImportPage = () => {
         };
         console.log('Submitting:', payload);
         try {
-            const res = await axios.post(
+            const res = await api.post(
                 '/import-orders/api/import/create',
                 payload
             );
