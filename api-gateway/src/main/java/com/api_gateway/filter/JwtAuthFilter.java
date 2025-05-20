@@ -1,85 +1,70 @@
 package com.api_gateway.filter;
 
-import com.api_gateway.util.JwtUtil;
+import com.api_gateway.config.JwtProperties;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.crypto.MACVerifier;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilter;
-import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.util.logging.Logger;
+import java.nio.charset.StandardCharsets;
 
 @Component
-public class JwtAuthFilter implements WebFilter {
-    private static final Logger logger = Logger.getLogger(JwtAuthFilter.class.getName());
+@Order(-1)
+public class JwtAuthFilter implements GlobalFilter {
 
-    private final JwtUtil jwtUtil;
+    private final JwtProperties jwtProperties;
 
-    public JwtAuthFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
+    @Autowired
+    public JwtAuthFilter(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
     }
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        String method = exchange.getRequest().getMethod().name();
 
-        logger.info("Đang xử lý request: " + method + " " + path);
-
-        // Bỏ qua xác thực cho các đường dẫn cụ thể
-        if (path.startsWith("/users/auth/")) {
-            logger.info("Bỏ qua xác thực cho đường dẫn auth: " + path);
+        // Bỏ qua một số route không cần xác thực
+        if (path.startsWith("/users/auth")) {
             return chain.filter(exchange);
         }
 
-        // Bỏ qua request OPTIONS
-        if ("OPTIONS".equals(method)) {
-            logger.info("Bỏ qua xác thực cho request OPTIONS");
-            return chain.filter(exchange);
-        }
+        String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-        String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
-        logger.info("Header Authorization: " + (authHeader != null ?
-                authHeader.substring(0, Math.min(15, authHeader.length())) + "..." : "null"));
-
-        if (authHeader == null) {
-            logger.warning("Thiếu header Authorization");
-            return createErrorResponse(exchange, "Thiếu header Authorization", HttpStatus.UNAUTHORIZED);
-        }
-
-        if (!authHeader.startsWith("Bearer ")) {
-            logger.warning("Định dạng header Authorization không hợp lệ, phải bắt đầu bằng 'Bearer '");
-            return createErrorResponse(exchange, "Định dạng header Authorization không hợp lệ", HttpStatus.UNAUTHORIZED);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return unauthorized(exchange);
         }
 
         String token = authHeader.substring(7);
 
         try {
-            // Gỡ lỗi token trước khi xác thực
-            jwtUtil.debugToken(token);
+            JWSObject jwsObject = JWSObject.parse(token);
+            MACVerifier verifier = new MACVerifier(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
 
-            // Xác thực token
-            var claims = jwtUtil.validateToken(token);
-            logger.info("Xác thực token thành công cho subject: " + claims.getSubject());
+            if (!jwsObject.verify(verifier)) {
+                return unauthorized(exchange);
+            }
 
-            // Lưu claims vào thuộc tính exchange
-            exchange.getAttributes().put("claims", claims);
-            exchange.getAttributes().put("userId", claims.getSubject());
+            // (Optional) In payload
+            String payload = jwsObject.getPayload().toString();
+            System.out.println("✅ JWT payload: " + payload);
 
             return chain.filter(exchange);
+
         } catch (Exception e) {
-            logger.severe("Xác thực token thất bại: " + e.getMessage());
-            return createErrorResponse(exchange, "Xác thực token thất bại: " + e.getMessage(), HttpStatus.UNAUTHORIZED);
+            e.printStackTrace();
+            return unauthorized(exchange);
         }
     }
 
-    private Mono<Void> createErrorResponse(ServerWebExchange exchange, String message, HttpStatus status) {
-        exchange.getResponse().setStatusCode(status);
-        exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        String errorJson = "{\"error\":\"" + message + "\"}";
-        byte[] bytes = errorJson.getBytes();
-        return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(bytes)));
+    private Mono<Void> unauthorized(ServerWebExchange exchange) {
+        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+        return exchange.getResponse().setComplete();
     }
 }

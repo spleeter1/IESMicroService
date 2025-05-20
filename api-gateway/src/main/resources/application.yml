@@ -4,21 +4,14 @@ spring:
   cloud:
     gateway:
       routes:
-#        - id: auth-service
-#          uri: lb://auth-service
-#          predicates:
-#            - Path=/auth-service/**
-#          filters:
-#            - StripPrefix=1
 
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/users/auth/**
             - Path=/users/**
           filters:
             - StripPrefix=1
-            - PreserveHostHeader
+
 
         - id: import-order-service
           uri: lb://import-order-service
@@ -26,7 +19,7 @@ spring:
             - Path=/import-orders/**
           filters:
             - StripPrefix=1
-            - PreserveHostHeader
+
 
         - id: order-service
           uri: lb://order-service
@@ -34,7 +27,7 @@ spring:
             - Path=/orders/**
           filters:
             - StripPrefix=1
-            - PreserveHostHeader
+
 
         - id: statistic-service
           uri: lb://statistic-service
@@ -42,7 +35,7 @@ spring:
             - Path=/statistics/**
           filters:
             - StripPrefix=1
-            - PreserveHostHeader
+
 
         - id: product-service
           uri: lb://product-service
@@ -50,10 +43,10 @@ spring:
             - Path=/products/**
           filters:
             - StripPrefix=1
-            - PreserveHostHeader
+
 
 jwt:
-  secret: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@"
+  secret: a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4
   expiration: 86400
 
 server:
@@ -64,7 +57,7 @@ eureka:
     prefer-ip-address: false
     hostname: localhost
   client:
-    register-with-eureka  : true
+    register-with-eureka: true
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
