@@ -2,12 +2,13 @@ import axios from 'axios';
 
 // Tạo instance axios
 const api = axios.create({
-    baseURL: '',
+    baseURL: '/',
 });
 
 api.interceptors.request.use(
     config => {
         const token = localStorage.getItem('token');
+        console.log('Token:', token);
         if (token) {
             config.headers = config.headers || {};
             config.headers.Authorization = `Bearer ${token}`;

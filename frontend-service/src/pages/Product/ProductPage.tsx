@@ -30,14 +30,15 @@ const ProductPage = () => {
 
     useEffect(() => {
         if (!selectedSupplier) return;
+
         const fetchProducts = async () => {
             try {
-                const res = await fetch(
-                    `/products/api/product/${selectedSupplier?.id}`
+                const res = await api.get(
+                    `/products/api/product/${selectedSupplier.id}`
                 );
-                const data = await res.json();
-                console.log(data);
-                setProducts(data);
+
+                console.log(res.data);
+                setProducts(res.data);
             } catch (err) {
                 console.error('Failed to fetch products', err);
             }

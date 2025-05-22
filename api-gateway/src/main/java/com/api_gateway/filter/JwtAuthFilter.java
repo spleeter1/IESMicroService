@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -31,7 +32,10 @@ public class JwtAuthFilter implements GlobalFilter {
         String path = exchange.getRequest().getURI().getPath();
 
         // Bỏ qua một số route không cần xác thực
-        if (path.startsWith("/users/auth")) {
+        if (
+                path.startsWith("/users/auth") ||
+                        exchange.getRequest().getMethod() == HttpMethod.OPTIONS // bỏ qua preflight
+        ) {
             return chain.filter(exchange);
         }
 
